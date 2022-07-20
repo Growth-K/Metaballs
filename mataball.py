@@ -10,25 +10,24 @@ def main():
     white = (255,255,255)
     green = (0,255,0)
     red = (255,0,0)
+    #init pygame
     screen = pygame.display.set_mode([X, Y])
     pygame.display.set_caption('Hand Tracking Game')
     running = True
     screen.fill(black)
-    # heart equation: x2+(5y4−|x|−−√)2=1.
     step = 15
     radius = 100
     circle_arr = []
     
-    for x in range(6):
+    for x in range(6): #create balls
         pos_x = random.randint(radius, X - radius)
         pos_y = random.randint(radius, Y - radius)
         speed_x = random.randint(1, 15)
         speed_y = random.randint(1, 15)
         radius = random.randint(20,60)
         circle_arr.append(co.circle(pos_x, pos_y, speed_x, speed_y, radius))
-    while running:
-        #draw_grid(screen, X, Y, step)
-        for circles in circle_arr:
+    while running: #main loop
+        for circles in circle_arr: #change the position of the circles
             circles.x += circles.speed_x
             circles.y += circles.speed_y
             if(circles.x + circles.radius >= X or circles.x - circles.radius <= 0):
@@ -41,7 +40,6 @@ def main():
             for j in range(0, Y, step):
                 x = i
                 y = j
-                #point_1 = ((x + pos_x) ** 2) + (((y + pos_y) * -1) - ((x + pos_x) ** 2) ** 0.33) ** 2 - size
                 point_1 = -1
                 for circle in circle_arr:
                     point_1 += circle.get_radius_by_dist(x, y)
@@ -50,22 +48,17 @@ def main():
         R = 0
         G = 200
         B = 100
+        #check all the points on the screen
         for row in range(len(point_array) - 1):
             for column in range(len(point_array[0]) - 1):
                 point_1 = point_array[row][column][0]
                 point_2 = point_array[row + 1][column][0]
-                #print(len(point_array), point_array[row + 1])
                 point_3 = point_array[row][column + 1][0]
                 point_4 = point_array[row + 1][column + 1][0]
-                # pygame.draw.circle(screen, green, (point_array[row][column][1], point_array[row][column][2]), 2)
-                # pygame.draw.circle(screen, red, (point_array[row + 1][column][1], point_array[row + 1][column][2]), 2)
-                # pygame.draw.circle(screen, white, (point_array[row][column + 1][1], point_array[row][column + 1][2]), 2)
-                # pygame.draw.circle(screen, (0,0,255), (point_array[row + 1][column + 1][1], point_array[row + 1][column + 1][2]), 2)
                 x = point_array[row][column][1]
                 y = point_array[row][column][2]
                 if(point_1 >= 0 and point_2 >= 0 and point_3 >= 0 and point_4 >= 0):
                     pass
-                    #pygame.draw.rect(screen, red, pygame.Rect(x, y, step, step))
                 elif(point_1 < 0 and point_2 < 0 and point_3 < 0 and point_4 < 0):
                     pass
 
@@ -82,11 +75,6 @@ def main():
                     point_2 -= 1
                     point_3 -= 1
                     point_4 -= 1
-                    #print(x, y, point_1, point_2, ((1 - point_1) / (point_2 - point_1)) * (step), x_edge_1)
-                    # pygame.draw.circle(screen, green, (x_edge_1, y), 2)
-                    # pygame.draw.circle(screen, green, (x_edge_2, y), 2)
-                    # pygame.draw.circle(screen, green, (x, y_edge_1), 2)
-                    # pygame.draw.circle(screen, green, (x, y_edge_2), 2)
                     G += 2
                     R += 2
                     B += 2
@@ -102,57 +90,44 @@ def main():
                                 #option 11
                             elif(point_4 >= 0):
                                 pygame.draw.line(screen, color, (x, y_edge_1), (x_edge_2, y + step), 3)
-                                #option 12
                             else:
                                 pygame.draw.line(screen, color, (x, y_edge_1), (x + step, y_edge_2), 3)
-                                #option 6
                         elif(point_3 >= 0):
                             if(point_4 >= 0):
                                 pygame.draw.line(screen, color, (x_edge_1, y), (x + step, y_edge_2), 3)
-                                #option 14
                             else:
                                 pygame.draw.line(screen, color, (x_edge_1, y), (x_edge_2, y + step), 3)
-                                #option 5
                         elif(point_4 >= 0):
                             pygame.draw.line(screen, color, (x_edge_1, y), (x + step, y_edge_2), 3)
                             pygame.draw.line(screen, color, (x, y_edge_1), (x_edge_2, y + step), 3)
-                            #option 9
                         else:
                             pygame.draw.line(screen, color, (x, y_edge_1), (x_edge_1, y), 3)
-                            #option 1
                     elif(point_2 >= 0):
 
                         if(point_3 >= 0):
                             if(point_4 >= 0):
                                 pygame.draw.line(screen, color, (x, y_edge_1), (x_edge_1, y), 3)
                                 pass
-                                #option 13
                             else:
                                 pygame.draw.line(screen, color, (x, y_edge_1), (x_edge_1, y), 3)
                                 pygame.draw.line(screen, color, (x_edge_2, y + step), (x + step, y_edge_2), 3)
                                 pass
-                                #option 10
                         elif(point_4 >= 0):
                             pygame.draw.line(screen, color, (x_edge_1, y), (x_edge_2, y + step), 3)
                             pass
-                            #OPTION 7
                         else:
                             pygame.draw.line(screen, color, (x_edge_1, y), (x + step, y_edge_2), 3)
                             pass 
-                            #option 2
                     elif(point_3 >= 0):
                         if(point_4 >= 0):
                             pygame.draw.line(screen, color, (x, y_edge_1), (x + step, y_edge_2), 3)
                             pass
-                            #option 8
                         else:
                             pygame.draw.line(screen, color, (x, y_edge_1), (x_edge_2, y + step), 3)
                             pass
-                            #option 4
                     else:
                         pygame.draw.line(screen, color, (x_edge_2, y + step), (x + step, y_edge_2),3)
                         pass
-                        #option 3
             
 
         for event in pygame.event.get():
